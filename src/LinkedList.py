@@ -81,6 +81,10 @@ class LinkedList:
             self.head = new_node
             self.tail = new_node
         else:
+            if self.head is self.tail:
+                self.head.next = new_node
+                self.tail = new_node
+                return
             new_node.prev = self.tail
             self.tail.next = new_node
             self.tail = new_node
@@ -123,9 +127,14 @@ class LinkedList:
             self.length -= 1
 
 
-ll = LinkedList()
-print(ll)
-ll.add_to_tail(44)
-print(ll)
-ll.add_to_tail(45)
-print(ll)
+# extensive functionality inspection for a personal concern
+
+# ll = LinkedList()
+# print(ll)
+# ll.add_to_tail(44)
+# print(ll)
+# ll.add_to_tail(45)
+# print(ll.head.next.value)
+# ll.add_to_tail(46)
+# print(ll.tail.value)
+# print(ll.tail.prev.value)

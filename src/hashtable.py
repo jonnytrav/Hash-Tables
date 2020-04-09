@@ -1,3 +1,4 @@
+
 # '''
 # Linked List hash table key/value pair
 # '''
@@ -54,8 +55,28 @@ class HashTable:
 
         Fill this in.
         '''
-
-        pass
+        # 1) take the key and pass into _hash_mod... returns index
+        # create a reference to the index
+        # 2)
+        # if node at index is None:
+        # -insert key/value as a LinkedPair() at the index
+        # elif value at index is not None:
+        # -if next value at this index is None:
+        # --insert at the next slot
+        # -else:
+        # --loop until we find an open spot
+        index = self._hash_mod(key)
+        if not self.storage[index]:
+            self.storage[index] = LinkedPair(key, value)
+        elif self.storage[index] is not None:
+            if not self.storage[index].next:
+                self.storage[index].next = LinkedPair(key, value)
+            else:
+                curr_node = self.storage[index]
+                while curr_node.next is not None:
+                    curr_node = curr_node.next
+                curr_node.next = LinkedPair(key, value)
+                print("smoke test")
 
     def remove(self, key):
         '''
@@ -93,7 +114,7 @@ if __name__ == "__main__":
     ht.insert("line_1", "Tiny hash table")
     ht.insert("line_2", "Filled beyond capacity")
     ht.insert("line_3", "Linked list saves the day!")
-    print(ht._hash_mod("jon"))
+    print(ht.storage[1].value)
 
     print("")
 
