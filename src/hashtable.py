@@ -59,12 +59,12 @@ class HashTable:
         # create a reference to the index
         # 2)
         # if node at index is None:
-        # -insert key/value as a LinkedPair() at the index
+        # --insert key/value as a LinkedPair() at the index
         # elif value at index is not None:
-        # -if next value at this index is None:
-        # --insert at the next slot
-        # -else:
-        # --loop until we find an open spot
+        # --if next value at this index is None:
+        # ----insert at the next slot
+        # --else:
+        # ----loop until we find an open spot
         index = self._hash_mod(key)
         if not self.storage[index]:
             self.storage[index] = LinkedPair(key, value)
@@ -76,7 +76,7 @@ class HashTable:
                 while curr_node.next is not None:
                     curr_node = curr_node.next
                 curr_node.next = LinkedPair(key, value)
-                print("smoke test")
+                # print("smoke test")
 
     def remove(self, key):
         '''
@@ -96,7 +96,30 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # 1) create a reference to the index where pair is stored
+        # using the _hash_mod(key) function
+        # 2) check the key in the pair that corresponds with the index
+        # 3)
+        # if the key arg matches the key at the index
+        # --return pair at the index
+        # else:
+        # --if next pair at this index is none:
+        # ---- return None
+        # --while loop that returns the pair with matching key
+
+        index = self._hash_mod(key)
+        if self.storage[index].key == key:
+            return self.storage[index].value
+        else:
+            if not self.storage[index].next:
+                return None
+            else:
+                curr_node = self.storage[index]
+                while curr_node.next is not None:
+                    if curr_node.key == key:
+                        return curr_node.value
+
+                return None
 
     def resize(self):
         '''
