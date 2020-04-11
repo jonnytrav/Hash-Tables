@@ -66,17 +66,17 @@ class HashTable:
         # --else:
         # ----loop until we find an open spot
         index = self._hash_mod(key)
-        if not self.storage[index]:
+        if self.storage[index] is None:
             self.storage[index] = LinkedPair(key, value)
         elif self.storage[index] is not None:
-            if not self.storage[index].next:
+            if self.storage[index].next is None:
                 self.storage[index].next = LinkedPair(key, value)
             else:
                 curr_node = self.storage[index]
                 while curr_node.next is not None:
                     curr_node = curr_node.next
                 curr_node.next = LinkedPair(key, value)
-                # print("smoke test")
+                print('smoke test')
 
     def remove(self, key):
         '''
@@ -86,7 +86,20 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        # if first pair matches
+        if self.storage[index].next is None:
+            self.storage[index] = None
+        elif self.storage[index].key != key:
+            prev = None
+            curr_node = self.storage[index]
+            # loop through chain until match is found
+            while curr_node is not None:
+                if curr_node.key == key:
+                    prev.next = curr_node.next
+                    return
+                prev = curr_node
+                curr_node = curr_node.next
 
     def retrieve(self, key):
         '''
@@ -111,7 +124,7 @@ class HashTable:
         if self.storage[index].key == key:
             return self.storage[index].value
         else:
-            if not self.storage[index].next:
+            if self.storage[index].next is None:
                 return None
             else:
                 curr_node = self.storage[index]
@@ -128,7 +141,26 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # for each value:
+        # --if curr_node.next is None:
+        # ----insert curr_node pair and continue
+        # --else:
+        # ----add each pair while .next is not None
+        old_storage = self.storage
+        self.storage = self.storage * 2
+        for pair in old_storage:
+            # if there's a single pair
+            if pair.next is None:
+                index = self._hash_mod(pair.key)
+                self.storage[index] = LinkedPair(pair.key, pair.value)
+            # if there's multiple linked pairs
+            else:
+                curr_node = pair
+                while curr_node.next is not None:
+                    index = self._hash_mod(curr_node.key)
+                    self.storage[index] = LinkedPair(
+                        curr_node.key, curr_node.value)
+                    curr_node = curr_node.next
 
 
 if __name__ == "__main__":
@@ -137,9 +169,11 @@ if __name__ == "__main__":
     ht.insert("line_1", "Tiny hash table")
     ht.insert("line_2", "Filled beyond capacity")
     ht.insert("line_3", "Linked list saves the day!")
-    print(ht.storage[1].value)
+    # print(ht.storage[0].value)
+    # print(ht.storage[1].value)
+    # print(ht.storage[2].value)
 
-    print("")
+    print(ht._hash_mod("line_3"))
 
     # Test storing beyond capacity
     print(ht.retrieve("line_1"))
